@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name='keywords' content="tele-TASK, HPI, computer science, technology, Germany, Potsdam"/>
+<meta name='description' content="tele-TASK Video-Vorlesungsportal des Hasso Plattner Instituts"/>
+<meta property='og:site_name' content='tele-TASK'/>
+<meta property='og:title' content='A.3 Microsoft-specific extensions'/>
+<meta property='og:description' content='tele-TASK Video-Vorlesungsportal des Hasso Plattner Instituts'/>
+<meta property='og:image' content='https://www.tele-task.de/static/media/series/Betriebssysteme_II_SS_2017/b10a684c-ca8d-4da3-959c-d599e4ce2414.jpeg'/>
+<meta property='og:type' content='video.other'/>
+
+<link rel="stylesheet" type="text/css" href="/static/css/pure-min.css?v=3b6d8d3def973ae708de5a4b68e8fbba">
+<link rel="stylesheet" type="text/css" href="/static/css/pure-grid-responsive-min.css?v=7e692ea99066ccc853b6d471865fdafd">
+<link rel="stylesheet" type="text/css" href="/static/css/base.css?v=9126c04430df4e0ff63c6b35673cdb09">
+<link rel="stylesheet" type="text/css" href="/static/css/fonts.css?v=aeba1cd37b2a75b7fe73fcc0a1c1b6d2">
+<link rel="stylesheet" type="text/css" href="/static/css/custom.css?v=9d563694b6761fe99f14f194b021c8f0">
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css?v=0831cba6a670e405168b84aa20798347">
+<link rel="icon" type="image/png" href="/static/favicon.png?v=6254b64cef9464b458439d5fda7e9ea7" sizes="64x64">
+<!-- Make the MEDIA_URL variable and current user name and language available to Javascript -->
+<script type="text/javascript">
+var MEDIA_URL = "/static/";
+var current_user =  null ;
+var language = 'en';
+</script>
+<!-- Loading WebComponents before Require.JS prevents compatibility issues -->
+<!-- Otherwise, 3rd-party libraries included in WebComponents might not be available globally, but registered as Require.JS module. -->
+
+<!-- Require.JS -->
+<script src="/static/js/require/require.js?v=e4ea2eda78793cdc4e8a4742fe815e41"></script>
+<script src="/static/js/require/config.js?v=0db486548b3835e46f66cac5cadbf244"></script>
+<!-- LearnTogether extension -->
+<!-- TODO Needs to be adapted to new video-player (WIP) -->
+<!--<script src="/static/js/learntogether/learntogether.js?v=9f14cd1ab870b0aa87e2de49be6f421e" type="text/javascript" charset="utf-8"></script>-->
+
+<link rel="stylesheet" href="/static/css/chosen/chosen.min.css?v=ad157990ab4968a16f3c2dd26518af1d">
+<link rel="stylesheet" href="/static/css/quiz/manager.css?v=eb35c612e545f29080e1616bf05fc985">
+
+<title>A.3 Microsoft-specific extensions</title>
+<!-- WebComponents polyfills -->
+<script src="/static/webcomponents/webcomponentsjs/webcomponents-bundle.js?v=980e98bd9d895445b3750a8a14a5bb45" charset="utf-8"></script>
+
+<!-- IE Polyfills needed for video-player component -->
+<script>
+if(!('ActiveXObject' in window)) {
+document.write('<!--');
+}
+</script>
+<script src="/static/webcomponents/video-player/es5/polyfills-ie.js?v=8fc99680029574d65de937e5ee7a929b"></script>
+<!-- DO NOT REMOVE -->
+<!-- WebComponents polyfills for ES6 supporting browsers -->
+<script src="/static/webcomponents/webcomponentsjs/custom-elements-es5-adapter.js?v=76e96ab5169c98106f3632e57e7a5c32" charset="utf-8"></script>
+<script src="/static/webcomponents/video-player/es5/video-player.js?v=8e9b6c9d41ed09990df78e9238a1ce4c" charset="utf-8"></script>
+
+
+</head>
+<body>
+<header class="pure-g container header">
+<div class="pure-u-1-24 pure-u-xl-2-24"></div>
+<div class="pure-u-4-24 pure-u-xl-5-24">
+<a href="/" title="">
+<img class="logo pure-img" src="/static/img/logo.png?v=fd7523b2df755a68e06ac872962ee92a">
+<img class="banner pure-img" src="/static/img/banner.png?v=fa15b70f29498c7a241d737e9a8d65a0">
+</a>
+</div>
+<div class="pure-u-18-24 pure-u-xl-15-24">
+<nav>
+<input class="menu-btn" type="checkbox" id="menu-btn" />
+<label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+<ul class="menu">
+<li><a href="/series/"><i class="fa fa-desktop"></i> Series</a></li>
+
+<li><a href="/lecture_butler/"><i class="fa fa-graduation-cap"></i> Lecture Butler</a></li>
+
+<li><a href="/playlist/overview/"><i class="fa fa-play"></i> Playlists</a></li>
+<li><a href="/calendar/"><i class="fa fa-calendar"></i> Calendar</a></li>
+
+<li><a href="/language/?redirect=/lecture/video/6290/"><i class="fa fa-flag"></i> Language</a>
+<ul>
+<li class="language_link" lang="en">English</li>
+<li class="language_link" lang="de">Deutsch</li>
+<li class="language_link" lang="zh">中文</li>
+</ul>
+</li>
+
+<li><a href="/auth/login/?next=/lecture/video/6290/"><i class="fa fa-sign-in"></i> Login</a></li>
+
+<li>
+<form action="/search/" method="post">
+<input id="search_term" class="pure-input" placeholder="Search..." name="search_term" size=10 type="text">
+<input type="hidden" name="_xsrf" value="2|f23ea61b|d7d35fa63a46bd7e252ed5792614d68d|1578582832"/>
+</form>
+</li>
+</ul>
+</nav>
+</div>
+<!-- <form class="pure-form searchbar">
+<input class="pure-input-1" type="search" placeholder="Search">
+</form> -->
+</header>
+<div class="flash-msg-container-fixed pure-g"></div>
+
+<div class="pure-g container">
+<div class="pure-u-1-24 pure-u-xl-2-24"></div>
+<div class="pure-u-22-24 pure-u-xl-20-24 pure-g">
+
+
+<h5 class="pure-u-1 breadcrumbs">
+&ensp;
+<a href="/series/1153/">Betriebssysteme II (SS 2017)</a>
+<i class = "fa fa-caret-right"></i>
+<a href="/series/1153/">Unit OS A: Networking</a>
+<i class = "fa fa-caret-right"></i>
+A.3 Microsoft-specific extensions
+</h5>
+<div class="box">
+<script src="/static/js/html5player_playlistsection.js?v=ccc23f235409ac641d609740310f33fe" charset="utf-8"></script>
+<script src="/static/js/ajax_xsrf.js?v=4e4e226a4c101b22fe6ce78bf8deb934" charset="utf-8"></script>
+<div class="rmpad">
+
+<video-player id="player" configuration='{&quot;positionInUrlFragment&quot;: true, &quot;quiz&quot;: {&quot;validationCallback&quot;: &quot;quizValidationCallback&quot;, &quot;questions&quot;: []}, &quot;chapters&quot;: [{&quot;startPosition&quot;: 0, &quot;title&quot;: &quot;Windows Sockets (winsock2) Extensions&quot;}, {&quot;startPosition&quot;: 972, &quot;title&quot;: &quot;Web API: Internet Support&quot;}, {&quot;startPosition&quot;: 1863, &quot;title&quot;: &quot;Windows IPC - Mailslots&quot;}], &quot;streams&quot;: [{&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hls/video.m3u8&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hd/video.mp4&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/sd/video.mp4&quot;}, {&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hls/desktop.m3u8&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hd/desktop.mp4&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/sd/desktop.mp4&quot;}], &quot;initialState&quot;: {&quot;playState&quot;: &quot;PLAYING&quot;}, &quot;theme&quot;: &quot;dark-yellow&quot;, &quot;language&quot;: &quot;en&quot;, &quot;playlist&quot;: {&quot;currentPosition&quot;: 1, &quot;hideInList&quot;: true, &quot;entries&quot;: [{&quot;url&quot;: &quot;/lecture/video/6286/&quot;, &quot;title&quot;: &quot;A.2 Windows Sockets Programming&quot;}, {&quot;url&quot;: &quot;/lecture/video/6290/&quot;, &quot;title&quot;: &quot;A.3 Microsoft-specific extensions&quot;}, {&quot;url&quot;: &quot;/lecture/video/6292/&quot;, &quot;title&quot;: &quot;Real-Time Embedded OS (1)&quot;}]}, &quot;fallbackStream&quot;: {&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hls/podcast.m3u8&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/hd/podcast.mp4&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_06_22/sd/podcast.mp4&quot;}, &quot;slides&quot;: [{&quot;startPosition&quot;: 1, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/1.jpeg&quot;}, {&quot;startPosition&quot;: 29, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/29.jpeg&quot;}, {&quot;startPosition&quot;: 108, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/108.jpeg&quot;}, {&quot;startPosition&quot;: 163, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/163.jpeg&quot;}, {&quot;startPosition&quot;: 278, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/278.jpeg&quot;}, {&quot;startPosition&quot;: 290, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/290.jpeg&quot;}, {&quot;startPosition&quot;: 371, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/371.jpeg&quot;}, {&quot;startPosition&quot;: 402, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/402.jpeg&quot;}, {&quot;startPosition&quot;: 442, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/442.jpeg&quot;}, {&quot;startPosition&quot;: 623, &quot;thumbnail&quot;: &quot;/static/media/slides/1153/9700/623.jpeg&quot;}]}'></video-player>
+
+
+</div>
+</div>
+
+<div class="box">
+
+<h3>A.3 Microsoft-specific extensions</h3>
+<h5 style="margin: 0px auto 1em">Part of the series <a href="/series/1153/">Betriebssysteme II (SS 2017)</a></h5>
+
+<img src="/static/media/series/Betriebssysteme_II_SS_2017/b10a684c-ca8d-4da3-959c-d599e4ce2414.jpeg" alt="A.3 Microsoft-specific extensions" class="box nopad lecture-img">
+
+<a href="/lecturer/95/">Prof. Dr. Andreas Polze</a>
+<p>
+
+</p>
+Date: June 22, 2017 <br>
+Language: German <br>
+Duration: 00:38:54 <br>
+
+<a onclick="copyLinkToPositionPressed(event)">Copy link to current video position</a>
+<!--<a class="label button-learntogether">Start LearnTogether</a>-->
+</div>
+<div class="box pure-controls">
+<!--Unterscheidung, was unterhalb des Videos angezeigt wird, je nachdem, ob eine Playlist oder eine Vorlesung abgespielt wird-->
+
+<!--Bei einer Vorlesung werden die zugehörigen Playlisten und die Chapters zum Erstellen angezeigt-->
+<div>
+tele-TASK now provides the ability to create playlists. You can create your own playlist based on this lecture or view playlists containing this lecture.
+</div>
+<a href="#" id="buttonShowBox"> Show</a>
+<div class="pure-g" id = "createPlaylist" style = "display:none">
+<div class="pure-u-1-1 pure-u-sm-14-24" style="padding-right:20px" id="related_playlists">
+<!--In dieser Div stehen die Playlisten, die zu einer Vorlesung die gerade abgespielt wird, gehören.
+Diese werden asynchron nachgeladen-->
+</div>
+<div class="pure-u-1-1 pure-u-sm-10-24">
+<!--Das Formular ermöglicht das Erstellen einer Playlist aus der Vorlesung heraus-->
+<form class = "pure-form pure-form-aligned" enctype = "multipart/form-data" action = "/playlist/create_from_player/9700/" method = "post" accept-charset = "utf-8" id="checkboxes">
+<div class="pure-control-group">
+
+</div>
+<input type="hidden" name="_xsrf" value="2|f23ea61b|d7d35fa63a46bd7e252ed5792614d68d|1578582832"/>
+</form>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<footer>
+<span>
+Copyright © 2009-2020 – tele-TASK – All Rights Reserved
+| <a href="/imprint">Imprint</a>
+| <a href="/about">About</a>
+| <a href="/privacy">Privacy</a>
+| <a href="/feed"> RSS Feed</a>
+</span>
+</footer>
+
+
+<script>
+var questionProxy;
+require(['quiz'], function(QuestionProxy) {
+questionProxy = new QuestionProxy(9700);
+});
+var quizValidationCallback = function(question, answers_given) {
+return questionProxy.validate_answer(question, answers_given);
+};
+</script>
+<script>
+var noteApi;
+require(['note-api'], function(NoteApi) {
+noteApi = new NoteApi(6290);
+noteApi.notifyPlayerOfApiChange();
+});
+</script>
+<script>
+var copyLinkToPositionPressed;
+require(['html5player-copy-link'], function(buttonPressedHandler) {
+copyLinkToPositionPressed = buttonPressedHandler;
+});
+</script>
+
+<script>
+var elements = document.getElementsByTagName("li");
+for(var i=0; i<elements.length; i++){
+if (elements[i].className == 'language_link') {
+elements[i].onclick = function(event){
+//Switch Language
+document.cookie="lang=" + event.target.getAttribute('lang')+";path=/";
+location.reload();
+}
+}
+}
+
+</script>
+
+<script type="text/javascript">
+var _paq = _paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="//stats.tele-task.de/";
+_paq.push(['setTrackerUrl', u+'piwik.php']);
+_paq.push(['setSiteId', '1']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+})();
+</script>
+<noscript><p><img src="//stats.tele-task.de/piwik.php?idsite=1&rec=1" style="border:0;" alt="" /></p></noscript>
+
+</body>
+</html>
