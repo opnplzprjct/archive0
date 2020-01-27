@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name='keywords' content="tele-TASK, HPI, computer science, technology, Germany, Potsdam"/>
+<meta name='description' content="tele-TASK Video-Vorlesungsportal des Hasso Plattner Instituts"/>
+<meta property='og:site_name' content='tele-TASK'/>
+<meta property='og:title' content='8.2 Windows File Systems'/>
+<meta property='og:description' content='tele-TASK Video-Vorlesungsportal des Hasso Plattner Instituts'/>
+<meta property='og:image' content='https://www.tele-task.de/static/media/series/Betriebssysteme_II_SS_2017/371b6ac4-e300-45d4-bf2c-6c4a4c3e0341.jpeg'/>
+<meta property='og:type' content='video.other'/>
+
+<link rel="stylesheet" type="text/css" href="/static/css/pure-min.css?v=3b6d8d3def973ae708de5a4b68e8fbba">
+<link rel="stylesheet" type="text/css" href="/static/css/pure-grid-responsive-min.css?v=7e692ea99066ccc853b6d471865fdafd">
+<link rel="stylesheet" type="text/css" href="/static/css/base.css?v=9126c04430df4e0ff63c6b35673cdb09">
+<link rel="stylesheet" type="text/css" href="/static/css/fonts.css?v=aeba1cd37b2a75b7fe73fcc0a1c1b6d2">
+<link rel="stylesheet" type="text/css" href="/static/css/custom.css?v=9d563694b6761fe99f14f194b021c8f0">
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css?v=0831cba6a670e405168b84aa20798347">
+<link rel="icon" type="image/png" href="/static/favicon.png?v=6254b64cef9464b458439d5fda7e9ea7" sizes="64x64">
+<!-- Make the MEDIA_URL variable and current user name and language available to Javascript -->
+<script type="text/javascript">
+var MEDIA_URL = "/static/";
+var current_user =  null ;
+var language = 'en';
+</script>
+<!-- Loading WebComponents before Require.JS prevents compatibility issues -->
+<!-- Otherwise, 3rd-party libraries included in WebComponents might not be available globally, but registered as Require.JS module. -->
+
+<!-- Require.JS -->
+<script src="/static/js/require/require.js?v=e4ea2eda78793cdc4e8a4742fe815e41"></script>
+<script src="/static/js/require/config.js?v=0db486548b3835e46f66cac5cadbf244"></script>
+<!-- LearnTogether extension -->
+<!-- TODO Needs to be adapted to new video-player (WIP) -->
+<!--<script src="/static/js/learntogether/learntogether.js?v=9f14cd1ab870b0aa87e2de49be6f421e" type="text/javascript" charset="utf-8"></script>-->
+
+<link rel="stylesheet" href="/static/css/chosen/chosen.min.css?v=ad157990ab4968a16f3c2dd26518af1d">
+<link rel="stylesheet" href="/static/css/quiz/manager.css?v=eb35c612e545f29080e1616bf05fc985">
+
+<title>8.2 Windows File Systems</title>
+<!-- WebComponents polyfills -->
+<script src="/static/webcomponents/webcomponentsjs/webcomponents-bundle.js?v=980e98bd9d895445b3750a8a14a5bb45" charset="utf-8"></script>
+
+<!-- IE Polyfills needed for video-player component -->
+<script>
+if(!('ActiveXObject' in window)) {
+document.write('<!--');
+}
+</script>
+<script src="/static/webcomponents/video-player/es5/polyfills-ie.js?v=8fc99680029574d65de937e5ee7a929b"></script>
+<!-- DO NOT REMOVE -->
+<!-- WebComponents polyfills for ES6 supporting browsers -->
+<script src="/static/webcomponents/webcomponentsjs/custom-elements-es5-adapter.js?v=76e96ab5169c98106f3632e57e7a5c32" charset="utf-8"></script>
+<script src="/static/webcomponents/video-player/es5/video-player.js?v=8e9b6c9d41ed09990df78e9238a1ce4c" charset="utf-8"></script>
+
+
+</head>
+<body>
+<header class="pure-g container header">
+<div class="pure-u-1-24 pure-u-xl-2-24"></div>
+<div class="pure-u-4-24 pure-u-xl-5-24">
+<a href="/" title="">
+<img class="logo pure-img" src="/static/img/logo.png?v=fd7523b2df755a68e06ac872962ee92a">
+<img class="banner pure-img" src="/static/img/banner.png?v=fa15b70f29498c7a241d737e9a8d65a0">
+</a>
+</div>
+<div class="pure-u-18-24 pure-u-xl-15-24">
+<nav>
+<input class="menu-btn" type="checkbox" id="menu-btn" />
+<label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+<ul class="menu">
+<li><a href="/series/"><i class="fa fa-desktop"></i> Series</a></li>
+
+<li><a href="/lecture_butler/"><i class="fa fa-graduation-cap"></i> Lecture Butler</a></li>
+
+<li><a href="/playlist/overview/"><i class="fa fa-play"></i> Playlists</a></li>
+<li><a href="/calendar/"><i class="fa fa-calendar"></i> Calendar</a></li>
+
+<li><a href="/language/?redirect=/lecture/video/6265/"><i class="fa fa-flag"></i> Language</a>
+<ul>
+<li class="language_link" lang="en">English</li>
+<li class="language_link" lang="de">Deutsch</li>
+<li class="language_link" lang="zh">中文</li>
+</ul>
+</li>
+
+<li><a href="/auth/login/?next=/lecture/video/6265/"><i class="fa fa-sign-in"></i> Login</a></li>
+
+<li>
+<form action="/search/" method="post">
+<input id="search_term" class="pure-input" placeholder="Search..." name="search_term" size=10 type="text">
+<input type="hidden" name="_xsrf" value="2|719cb18d|2a21ea47b7d8a64c06993a3a495bf2cb|1578582834"/>
+</form>
+</li>
+</ul>
+</nav>
+</div>
+<!-- <form class="pure-form searchbar">
+<input class="pure-input-1" type="search" placeholder="Search">
+</form> -->
+</header>
+<div class="flash-msg-container-fixed pure-g"></div>
+
+<div class="pure-g container">
+<div class="pure-u-1-24 pure-u-xl-2-24"></div>
+<div class="pure-u-22-24 pure-u-xl-20-24 pure-g">
+
+
+<h5 class="pure-u-1 breadcrumbs">
+&ensp;
+<a href="/series/1153/">Betriebssysteme II (SS 2017)</a>
+<i class = "fa fa-caret-right"></i>
+<a href="/series/1153/">Unit OS8: File System </a>
+<i class = "fa fa-caret-right"></i>
+8.2 Windows File Systems
+</h5>
+<div class="box">
+<script src="/static/js/html5player_playlistsection.js?v=ccc23f235409ac641d609740310f33fe" charset="utf-8"></script>
+<script src="/static/js/ajax_xsrf.js?v=4e4e226a4c101b22fe6ce78bf8deb934" charset="utf-8"></script>
+<div class="rmpad">
+
+<video-player id="player" configuration='{&quot;playlist&quot;: {&quot;hideInList&quot;: true, &quot;entries&quot;: [{&quot;title&quot;: &quot;8.1 Background: File System Concepts&quot;, &quot;url&quot;: &quot;/lecture/video/6263/&quot;}, {&quot;title&quot;: &quot;8.2 Windows File Systems&quot;, &quot;url&quot;: &quot;/lecture/video/6265/&quot;}, {&quot;title&quot;: &quot;NTFS File System Driver&quot;, &quot;url&quot;: &quot;/lecture/video/6269/&quot;}], &quot;currentPosition&quot;: 1}, &quot;language&quot;: &quot;en&quot;, &quot;slides&quot;: [{&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3.jpeg&quot;, &quot;startPosition&quot;: 3}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/141.jpeg&quot;, &quot;startPosition&quot;: 141}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/264.jpeg&quot;, &quot;startPosition&quot;: 264}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/453.jpeg&quot;, &quot;startPosition&quot;: 453}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/909.jpeg&quot;, &quot;startPosition&quot;: 909}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/978.jpeg&quot;, &quot;startPosition&quot;: 978}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1125.jpeg&quot;, &quot;startPosition&quot;: 1125}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1161.jpeg&quot;, &quot;startPosition&quot;: 1161}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1596.jpeg&quot;, &quot;startPosition&quot;: 1596}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1605.jpeg&quot;, &quot;startPosition&quot;: 1605}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1713.jpeg&quot;, &quot;startPosition&quot;: 1713}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1800.jpeg&quot;, &quot;startPosition&quot;: 1800}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/1962.jpeg&quot;, &quot;startPosition&quot;: 1962}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2085.jpeg&quot;, &quot;startPosition&quot;: 2085}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2097.jpeg&quot;, &quot;startPosition&quot;: 2097}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2124.jpeg&quot;, &quot;startPosition&quot;: 2124}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2136.jpeg&quot;, &quot;startPosition&quot;: 2136}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2247.jpeg&quot;, &quot;startPosition&quot;: 2247}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2286.jpeg&quot;, &quot;startPosition&quot;: 2286}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2610.jpeg&quot;, &quot;startPosition&quot;: 2610}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2775.jpeg&quot;, &quot;startPosition&quot;: 2775}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2850.jpeg&quot;, &quot;startPosition&quot;: 2850}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/2895.jpeg&quot;, &quot;startPosition&quot;: 2895}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3195.jpeg&quot;, &quot;startPosition&quot;: 3195}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3255.jpeg&quot;, &quot;startPosition&quot;: 3255}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3267.jpeg&quot;, &quot;startPosition&quot;: 3267}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3282.jpeg&quot;, &quot;startPosition&quot;: 3282}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3306.jpeg&quot;, &quot;startPosition&quot;: 3306}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3327.jpeg&quot;, &quot;startPosition&quot;: 3327}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3336.jpeg&quot;, &quot;startPosition&quot;: 3336}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3396.jpeg&quot;, &quot;startPosition&quot;: 3396}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3408.jpeg&quot;, &quot;startPosition&quot;: 3408}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3432.jpeg&quot;, &quot;startPosition&quot;: 3432}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3438.jpeg&quot;, &quot;startPosition&quot;: 3438}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3444.jpeg&quot;, &quot;startPosition&quot;: 3444}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3468.jpeg&quot;, &quot;startPosition&quot;: 3468}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3501.jpeg&quot;, &quot;startPosition&quot;: 3501}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3504.jpeg&quot;, &quot;startPosition&quot;: 3504}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3528.jpeg&quot;, &quot;startPosition&quot;: 3528}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3534.jpeg&quot;, &quot;startPosition&quot;: 3534}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3594.jpeg&quot;, &quot;startPosition&quot;: 3594}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3606.jpeg&quot;, &quot;startPosition&quot;: 3606}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3618.jpeg&quot;, &quot;startPosition&quot;: 3618}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3627.jpeg&quot;, &quot;startPosition&quot;: 3627}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3666.jpeg&quot;, &quot;startPosition&quot;: 3666}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3702.jpeg&quot;, &quot;startPosition&quot;: 3702}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3720.jpeg&quot;, &quot;startPosition&quot;: 3720}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3729.jpeg&quot;, &quot;startPosition&quot;: 3729}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3843.jpeg&quot;, &quot;startPosition&quot;: 3843}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3855.jpeg&quot;, &quot;startPosition&quot;: 3855}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3867.jpeg&quot;, &quot;startPosition&quot;: 3867}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3894.jpeg&quot;, &quot;startPosition&quot;: 3894}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3948.jpeg&quot;, &quot;startPosition&quot;: 3948}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/3954.jpeg&quot;, &quot;startPosition&quot;: 3954}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4011.jpeg&quot;, &quot;startPosition&quot;: 4011}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4026.jpeg&quot;, &quot;startPosition&quot;: 4026}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4059.jpeg&quot;, &quot;startPosition&quot;: 4059}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4074.jpeg&quot;, &quot;startPosition&quot;: 4074}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4080.jpeg&quot;, &quot;startPosition&quot;: 4080}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4086.jpeg&quot;, &quot;startPosition&quot;: 4086}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4095.jpeg&quot;, &quot;startPosition&quot;: 4095}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4104.jpeg&quot;, &quot;startPosition&quot;: 4104}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4110.jpeg&quot;, &quot;startPosition&quot;: 4110}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4116.jpeg&quot;, &quot;startPosition&quot;: 4116}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4128.jpeg&quot;, &quot;startPosition&quot;: 4128}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4161.jpeg&quot;, &quot;startPosition&quot;: 4161}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4251.jpeg&quot;, &quot;startPosition&quot;: 4251}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4266.jpeg&quot;, &quot;startPosition&quot;: 4266}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4386.jpeg&quot;, &quot;startPosition&quot;: 4386}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4425.jpeg&quot;, &quot;startPosition&quot;: 4425}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4545.jpeg&quot;, &quot;startPosition&quot;: 4545}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4551.jpeg&quot;, &quot;startPosition&quot;: 4551}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4560.jpeg&quot;, &quot;startPosition&quot;: 4560}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4593.jpeg&quot;, &quot;startPosition&quot;: 4593}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4665.jpeg&quot;, &quot;startPosition&quot;: 4665}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4680.jpeg&quot;, &quot;startPosition&quot;: 4680}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4698.jpeg&quot;, &quot;startPosition&quot;: 4698}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4710.jpeg&quot;, &quot;startPosition&quot;: 4710}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4716.jpeg&quot;, &quot;startPosition&quot;: 4716}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4731.jpeg&quot;, &quot;startPosition&quot;: 4731}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4749.jpeg&quot;, &quot;startPosition&quot;: 4749}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4755.jpeg&quot;, &quot;startPosition&quot;: 4755}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4761.jpeg&quot;, &quot;startPosition&quot;: 4761}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4875.jpeg&quot;, &quot;startPosition&quot;: 4875}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/4896.jpeg&quot;, &quot;startPosition&quot;: 4896}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/5016.jpeg&quot;, &quot;startPosition&quot;: 5016}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/5049.jpeg&quot;, &quot;startPosition&quot;: 5049}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/5055.jpeg&quot;, &quot;startPosition&quot;: 5055}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/5091.jpeg&quot;, &quot;startPosition&quot;: 5091}, {&quot;thumbnail&quot;: &quot;/static/media/slides/1153/9674/5186.jpeg&quot;, &quot;startPosition&quot;: 5186}], &quot;streams&quot;: [{&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hls/video.m3u8&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/sd/video.mp4&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hd/video.mp4&quot;}, {&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hls/desktop.m3u8&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/sd/desktop.mp4&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hd/desktop.mp4&quot;}], &quot;initialState&quot;: {&quot;playState&quot;: &quot;PLAYING&quot;}, &quot;chapters&quot;: [{&quot;title&quot;: &quot;File Systems supported by Windows&quot;, &quot;startPosition&quot;: 0}, {&quot;title&quot;: &quot;NTFS&quot;, &quot;startPosition&quot;: 2290}, {&quot;title&quot;: &quot;Large Disks and Large Files&quot;, &quot;startPosition&quot;: 3256}, {&quot;title&quot;: &quot;Other NTFS Features&quot;, &quot;startPosition&quot;: 4268}], &quot;quiz&quot;: {&quot;validationCallback&quot;: &quot;quizValidationCallback&quot;, &quot;questions&quot;: []}, &quot;positionInUrlFragment&quot;: true, &quot;fallbackStream&quot;: {&quot;hls&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hls/podcast.m3u8&quot;, &quot;sd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/sd/podcast.mp4&quot;, &quot;hd&quot;: &quot;https://www10-fms.hpi.uni-potsdam.de/vod/media/SS_2017/BS2_SS17/BS2_2017_05_23/hd/podcast.mp4&quot;}, &quot;theme&quot;: &quot;dark-yellow&quot;}'></video-player>
+
+
+</div>
+</div>
+
+<div class="box">
+
+<h3>8.2 Windows File Systems</h3>
+<h5 style="margin: 0px auto 1em">Part of the series <a href="/series/1153/">Betriebssysteme II (SS 2017)</a></h5>
+
+<img src="/static/media/series/Betriebssysteme_II_SS_2017/371b6ac4-e300-45d4-bf2c-6c4a4c3e0341.jpeg" alt="8.2 Windows File Systems" class="box nopad lecture-img">
+
+<a href="/lecturer/95/">Prof. Dr. Andreas Polze</a>
+<p>
+
+</p>
+Date: May 23, 2017 <br>
+Language: German <br>
+Duration: 01:26:26 <br>
+
+<a onclick="copyLinkToPositionPressed(event)">Copy link to current video position</a>
+<!--<a class="label button-learntogether">Start LearnTogether</a>-->
+</div>
+<div class="box pure-controls">
+<!--Unterscheidung, was unterhalb des Videos angezeigt wird, je nachdem, ob eine Playlist oder eine Vorlesung abgespielt wird-->
+
+<!--Bei einer Vorlesung werden die zugehörigen Playlisten und die Chapters zum Erstellen angezeigt-->
+<div>
+tele-TASK now provides the ability to create playlists. You can create your own playlist based on this lecture or view playlists containing this lecture.
+</div>
+<a href="#" id="buttonShowBox"> Show</a>
+<div class="pure-g" id = "createPlaylist" style = "display:none">
+<div class="pure-u-1-1 pure-u-sm-14-24" style="padding-right:20px" id="related_playlists">
+<!--In dieser Div stehen die Playlisten, die zu einer Vorlesung die gerade abgespielt wird, gehören.
+Diese werden asynchron nachgeladen-->
+</div>
+<div class="pure-u-1-1 pure-u-sm-10-24">
+<!--Das Formular ermöglicht das Erstellen einer Playlist aus der Vorlesung heraus-->
+<form class = "pure-form pure-form-aligned" enctype = "multipart/form-data" action = "/playlist/create_from_player/9674/" method = "post" accept-charset = "utf-8" id="checkboxes">
+<div class="pure-control-group">
+
+</div>
+<input type="hidden" name="_xsrf" value="2|719cb18d|2a21ea47b7d8a64c06993a3a495bf2cb|1578582834"/>
+</form>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<footer>
+<span>
+Copyright © 2009-2020 – tele-TASK – All Rights Reserved
+| <a href="/imprint">Imprint</a>
+| <a href="/about">About</a>
+| <a href="/privacy">Privacy</a>
+| <a href="/feed"> RSS Feed</a>
+</span>
+</footer>
+
+
+<script>
+var questionProxy;
+require(['quiz'], function(QuestionProxy) {
+questionProxy = new QuestionProxy(9674);
+});
+var quizValidationCallback = function(question, answers_given) {
+return questionProxy.validate_answer(question, answers_given);
+};
+</script>
+<script>
+var noteApi;
+require(['note-api'], function(NoteApi) {
+noteApi = new NoteApi(6265);
+noteApi.notifyPlayerOfApiChange();
+});
+</script>
+<script>
+var copyLinkToPositionPressed;
+require(['html5player-copy-link'], function(buttonPressedHandler) {
+copyLinkToPositionPressed = buttonPressedHandler;
+});
+</script>
+
+<script>
+var elements = document.getElementsByTagName("li");
+for(var i=0; i<elements.length; i++){
+if (elements[i].className == 'language_link') {
+elements[i].onclick = function(event){
+//Switch Language
+document.cookie="lang=" + event.target.getAttribute('lang')+";path=/";
+location.reload();
+}
+}
+}
+
+</script>
+
+<script type="text/javascript">
+var _paq = _paq || [];
+/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+_paq.push(['trackPageView']);
+_paq.push(['enableLinkTracking']);
+(function() {
+var u="//stats.tele-task.de/";
+_paq.push(['setTrackerUrl', u+'piwik.php']);
+_paq.push(['setSiteId', '1']);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+})();
+</script>
+<noscript><p><img src="//stats.tele-task.de/piwik.php?idsite=1&rec=1" style="border:0;" alt="" /></p></noscript>
+
+</body>
+</html>
